@@ -2,9 +2,8 @@ import express from "express";
 import { createConnection } from "mysql";
 import bluebird from "bluebird";
 const app = express();
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("Hello");
 });
