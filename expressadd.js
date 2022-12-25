@@ -2,9 +2,6 @@ import express from "express";
 import { createConnection } from "mysql";
 import bluebird from "bluebird";
 const app = express();
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
 app.get("/", (req, res) => {
   res.send("Hello");
 });
@@ -24,12 +21,12 @@ app.get("/cdac", async (req, res) => {
   let connection = createConnection(ConnectionUri);
   bluebird.promisifyAll(connection);
   await connection.connectAsync();
-  let sql = `Select * from message`;
+  let sql = "Select * from message";
   let results = await connection.queryAsync(sql);
   await connection.endAsync();
   res.json(results);
 });
-app.post("/insertindb", async (req, res) => {
+app.post("/message", async (req, res) => {
   let ConnectionUri = {
     host: "localhost",
     user: "root",
@@ -39,13 +36,7 @@ app.post("/insertindb", async (req, res) => {
   let connection = createConnection(ConnectionUri);
   bluebird.promisifyAll(connection);
   await connection.connectAsync();
-
-  let message = "Hello...2023";
-  let reply = 0;
-
-  let sql = `Insert into message (message, reply) values ('${message}',${reply})`;
-  await connection.queryAsync(sql);
-  connection.endAsync();
-  res.json({ message: "true" });
+  let sql = `insert into message (message, reply) values ('${message}', ${reply})`;
+  connection.end();
 });
 app.listen(3000);
